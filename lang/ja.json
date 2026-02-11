@@ -1,0 +1,8 @@
+{
+  "MSG_STATUS_START": "解析を開始します: {target}",
+  "MSG_RESULT_HEADER": "\n--- OCR 抽出結果 ---",
+  "MSG_ERR_GENERAL": "エラーが発生しました: {error}",
+  "MSG_ERR_FILE_NOT_FOUND": "指定されたローカルパスが見つかりません: {path}",
+  "MSG_ERR_API_RESPONSE": "Vision API エラー: {error}",
+  "USAGE": "使い方: python {program} <画像パスまたはURL>"
+}

@@ -1,0 +1,8 @@
+{
+  "MSG_STATUS_START": "Starting analysis: {target}",
+  "MSG_RESULT_HEADER": "\n--- OCR Result ---",
+  "MSG_ERR_GENERAL": "An error occurred: {error}",
+  "MSG_ERR_FILE_NOT_FOUND": "The specified local path was not found: {path}",
+  "MSG_ERR_API_RESPONSE": "Vision API Error: {error}",
+  "USAGE": "Usage: python {program} <image_path_or_url>"
+}
