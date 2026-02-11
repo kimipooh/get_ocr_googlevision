@@ -66,15 +66,10 @@ xcode-select --install
    - Click **ADD KEY > Create new key (JSON)**
 
 6. **Setup**
-   - Rename the downloaded file to:
+   - Place the download file( service-account-key.json ) in your project root directory.
 
-```
-service-account-key.json
-```
 
-   - Place it in your project root directory.
-
-⚠ **Important:** Never share this file.
+⚠ **Important:** Please keep the downloaded file in a place that you will not share. The Google Cloud Vision API is available for a fee (https://cloud.google.com/vision#pricing). As of February 2026, there is a free quota of 1,000 units per month.
 
 ---
 
