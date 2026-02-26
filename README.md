@@ -8,130 +8,80 @@
 
 ## ✨ Features
 
-- 🔍 **Auto-Detection**  
-  Seamlessly handles both local file paths and remote image URLs.
+- 🔍 **Auto-Detection & Manual Hints** Switch between "auto" mode for automatic language detection and "hint" mode to improve accuracy for specific languages.
 
-- 🌏 **Multi-Language Support**  
-  Optimized for complex scripts (Thai, Vietnamese, etc.) using `language_hints`.
+- 🌏 **Multi-Language Support** Optimized for complex scripts (Thai, Vietnamese, etc.) using `language_hints`.
 
-- 🧩 **Modular Design**  
-  Clean, class-based implementation (`VisionAPIWrapper`) for easy integration.
+- 🌐 **Localization (I18n)** UI messages managed via external JSON files in the `lang/` directory, supporting English and Japanese.
 
-- 🌐 **Localization (I18n)**  
-  UI messages managed via external JSON files in the `lang/` directory.
+- 🧩 **Modular Design** Clean, class-based implementation (`VisionAPIWrapper`) for easy integration into other projects.
 
-- 🛡 **Future-Proof**  
-  Suppresses version-related `FutureWarning` messages common in older Python environments (e.g., macOS system Python 3.9).
+- 🛡 **Future-Proof** Suppresses version-related `FutureWarning` messages common in various Python environments.
 
 ---
 
 ## 📋 Prerequisites
 
-### 🖥 macOS Users
-Install **Xcode Command Line Tools**:
-
-```bash
-xcode-select --install
-```
-
 ### 🐍 Python
 - Python **3.10 ~ 3.14+** (latest recommended)
 
-### ☁ Google Cloud
-- A Google Cloud project with **Cloud Vision API enabled**
+### ☁ Google Cloud Setup
+1. Enable **Cloud Vision API** in your Google Cloud Console.
+2. Create a **Service Account** with the `Cloud Vision API User` role.
+3. Generate a **JSON Key** and save it as `service-account-key.json` in your project root.
+
+> [!CAUTION]
+> **Important:** Never share your JSON key. The Google Cloud Vision API offers a free quota of 1,000 units per month as of February 2026.
 
 ---
 
-## 🔑 How to Get Google Cloud API Credentials
+## 🚀 Installation & Setup
 
-1. **Create a Google Cloud Project**  
-   Go to the Google Cloud Console and create a new project.
-
-2. **Enable Cloud Vision API**  
-   Navigate to:  
-   `APIs & Services > Library`  
-   Search for **Cloud Vision API** → Click **Enable**
-
-3. **Create a Service Account**  
-   Go to:  
-   `IAM & Admin > Service Accounts`  
-   Click **+ CREATE SERVICE ACCOUNT**
-
-4. **Assign Roles**  
-   Assign the role:  
-   `Cloud Vision API User`
-
-5. **Generate JSON Key**
-   - Go to **Keys**
-   - Click **ADD KEY > Create new key (JSON)**
-
-6. **Setup**
-   - Place the download file( service-account-key.json ) in your project root directory.
-
-
-⚠ **Important:** Please keep the downloaded file in a place that you will not share. The Google Cloud Vision API is available for a fee (https://cloud.google.com/vision#pricing). As of February 2026, there is a free quota of 1,000 units per month.
-
----
-
-## 🚀 Installation & Setup (macOS Best Practice)
-
-> ⚠ Do NOT modify macOS system Python (`/usr/bin/python3`).  
-> This project uses a sandboxed approach via **Homebrew + venv**.
-
----
-
-### 1️⃣ Install Homebrew & Latest Python
-
-Install Homebrew (if not already installed):
-
+### 1. Create a Virtual Environment
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+python -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 ```
 
-*It is better not to incorporate the path settings required by homebrew. It is just meant to be used as a sub.
-
-Install Python 3.14:
-
-```bash
-brew install python@3.14
-```
-
----
-
-### 2️⃣ Create an Isolated Virtual Environment
-
-Navigate to the project folder:
-
-```bash
-cd path/to/vision-ocr-tool
-```
-
-Create the environment using the specific Homebrew Python path:
-
-```bash
-/opt/homebrew/bin/python3.14 -m venv .venv
-```
-
----
-
-### 3️⃣ Activate and Install Dependencies
-
-Activate virtual environment:
-
-```bash
-source .venv/bin/activate
-```
-
-Install required library:
-
+### 2. Install Dependencies
 ```bash
 pip install google-cloud-vision
 ```
 
-or
+---
 
+## ⚙ Configuration
+
+### 🔐 Credentials
+Set the environment variable before running the script:
 ```bash
-/opt/homebrew/bin/python3.14 -m pip install google-cloud-vision
+export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
+```
+
+### 🔧 Global Variables
+Customize behavior in `ocr_vision.py`:
+- `DEFAULT_LANGUAGE_HINTS`: Default hints (e.g., `["vi", "th", "zh", "ja"]`).
+- `HIDE_PYTHON_WARNINGS`: Toggle suppression of API-related warnings.
+
+---
+
+## ▶ Usage
+
+### 📂 Basic Execution (Auto-Detection)
+```bash
+python get_ocr_vision.py ./samples/image.jpg
+```
+
+### 🌐 Specify UI Language
+Use the `--lang` option to use specific messages from the `lang/` directory.
+```bash
+python get_ocr_vision.py ./samples/photo.png --lang en
+```
+
+### 🌏 Provide OCR Language Hints
+Provide comma-separated language codes to improve accuracy for specific scripts.
+```bash
+python get_ocr_vision.py https://example.com/image.jpg --ocr-hint "vi,lo"
 ```
 
 ---
@@ -143,93 +93,15 @@ get_ocr_googlevision/
 ├── lang/
 │   ├── en.json                 # English UI messages
 │   └── ja.json                 # Japanese UI messages
-├── ocr_vision.py               # Core logic module
+├── ocr_vision.py               # Core logic (API Wrapper)
 ├── get_ocr_vision.py           # CLI execution script
 └── LICENSE                     # MIT License file
-
 ```
-
----
-
-## ⚙ Configuration
-
-### 🔧 Global Variables
-
-All global variables in `ocr_vision.py`  
-(e.g., `DEFAULT_LANGUAGE_HINTS`)  
-are documented with English comments for easy customization.
-
----
-
-### 🔐 Credentials Environment Variable
-
-Set before running the script:
-
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
-```
-
----
-
-## ▶ Usage
-
-Make sure your virtual environment is activated:
-
-```bash
-source .venv/bin/activate
-```
-
-### 📂 Process a Local Image
-
-```bash
-python get_ocr_vision.py ./samples/image.jpg
-```
-
-### 🌐 Process an Image from URL
-
-```bash
-python get_ocr_vision.py https://example.com/image.png
-```
-
----
-
-## 📚 Appendix: Why This Method?
-
-### ❗ The “PATH” Pitfall
-
-Many tutorials suggest:
-
-- Adding `/opt/homebrew/bin` to your global `PATH`
-- Aliasing `python` to the Homebrew version
-
-⚠ This is risky.
-
-macOS system tasks rely on the default Python.  
-Changing it globally can break OS-level functionality.
-
----
-
-### ✅ The Solution: Full-Path venv
-
-By using the **Full-Path venv creation method**, we ensure:
-
-- ✔ The project runs on **Python 3.14**
-- ✔ macOS system Python remains untouched
-- ✔ Dependencies are isolated in `.venv`
-- ✔ No library version conflicts
 
 ---
 
 ## 👤 Author
-
 **Kimiya Kitani**
 
----
-
 ## 📜 License
-
-This project is licensed under the **MIT License**.  
-See the `LICENSE` file for details.
-
----
-
+This project is licensed under the **MIT License**.
