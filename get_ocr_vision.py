@@ -9,7 +9,7 @@ Description: Vision OCR tool supporting comma-separated language hints (e.g., --
 import sys
 import os
 import argparse
-from ocr_vision import VisionAPIWrapper, LanguageLoader
+from modules.ocr_vision import VisionAPIWrapper, LanguageLoader
 
 # ==========================================
 # グローバル設定・メッセージ定義

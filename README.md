@@ -92,8 +92,9 @@ python get_ocr_vision.py https://example.com/image.jpg --ocr-hint "vi,lo"
 get_ocr_googlevision/
 ├── lang/
 │   ├── en.json                 # English UI messages
-│   └── ja.json                 # Japanese UI messages
-├── ocr_vision.py               # Core logic (API Wrapper)
+│   └── ja.json                 # Japanese UI
+├── modules/
+│   └── ocr_vision.py           # Core logic (API messages Wrapper)
 ├── get_ocr_vision.py           # CLI execution script
 └── LICENSE                     # MIT License file
 ```

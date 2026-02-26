@@ -36,7 +36,8 @@ class LanguageLoader:
         self._load_messages()
 
     def _load_messages(self):
-        base_dir = os.path.dirname(__file__)
+        current_dir = os.path.dirname(__file__)
+        base_dir = os.path.dirname(current_dir)
         lang_file = os.path.join(base_dir, "lang", f"{self.lang_code}.json")
         
         if not os.path.exists(lang_file):
