@@ -106,3 +106,5 @@ get_ocr_googlevision/
 
 ## 📜 License
 This project is licensed under the **MIT License**.
+
+Copyright (c) 2026 Kimiya Kitani
