@@ -6,7 +6,7 @@ A lightweight command-line OCR tool for research use with Google Cloud Vision AP
 Author: Kimiya Kitani
 License: MIT License (see LICENSE)
 Repository purpose: Public research tool
-Version: 1.5
+Version: 1.5.0
 Date: 2026-03-08
 
 Overview:

@@ -8,7 +8,7 @@ authors:
     given-names: "Kimiya"
 repository-code: "https://github.com/kimipooh/get_ocr_googlevision"
 license: "MIT"
-version: "1.5"
+version: "1.5.0"
 date-released: "2026-03-08"
 keywords:
   - OCR
@@ -23,7 +23,7 @@ preferred-citation:
     - family-names: "Kitani"
       given-names: "Kimiya"
   title: "get_ocr_googlevision"
-  version: "1.5"
+  version: "1.5.0"
   date-released: "2026-03-08"
   repository-code: "https://github.com/kimipooh/get_ocr_googlevision"
   note: "Add the Zenodo DOI here after the first GitHub release is archived."

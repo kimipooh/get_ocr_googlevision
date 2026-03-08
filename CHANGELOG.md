@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project follows Semantic Versioning.
 
-## [1.5] - 2026-03-08
+## [1.5.0] - 2026-03-08
+
+This is the first public release of the tool.
 
 ### Added
 
