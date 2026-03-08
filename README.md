@@ -1,154 +1,165 @@
-# get_ocr_googlevision
+# Google Cloud Vision Multi-Language OCR Tool
 
-**English** | [Japanese](README_ja.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18910589.svg)](https://doi.org/10.5281/zenodo.18910589)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](#installation)
+[![Japanese](https://img.shields.io/badge/README-日本語-green.svg)](README_ja.md)
 
-A lightweight research tool for extracting text from local image files or remote image URLs with the Google Cloud Vision API.
-It is designed for practical OCR work in multilingual environments, especially when dealing with Vietnamese, Thai, Chinese, Japanese, Lao, and mixed-script materials.
+Research software for OCR text extraction using Google Cloud Vision API.
 
-## Overview
-
-This repository provides a small command-line wrapper around Google Cloud Vision Document Text Detection.
-It supports:
-
-- OCR for local image files
-- OCR for remote image URLs
-- optional language hints for better recognition accuracy
-- simple UI message localization via JSON files
-- a modular structure that can be reused in other research workflows
-
-This project is intended as a reusable research tool rather than a large framework.
+This tool provides a practical command-line workflow for multilingual OCR on local image files and remote image URLs. It was developed for research use cases that involve Southeast Asian and East Asian materials, including Vietnamese, Thai, Chinese, and Japanese text.
 
 ## Features
 
-- Simple CLI interface
 - Google Cloud Vision API based OCR
-- Automatic detection mode when no language hints are provided
-- Manual language hint mode with comma-separated codes such as `vi,th,ja`
-- English and Japanese UI message files in `lang/`
-- Separated core logic in `modules/ocr_vision.py`
+- Supports local image files and remote image URLs
+- Automatic OCR mode or manual language hints via `--ocr-hint`
+- English and Japanese UI messages via JSON language files
+- Modular core implementation in `modules/ocr_vision.py`
+- Suitable for research-oriented OCR and text extraction workflows
 
-## Project structure
+## Installation
 
-```text
-get_ocr_googlevision/
-├── CITATION.cff
-├── CHANGELOG.md
-├── LICENSE
-├── README.md
-├── README_ja.md
-├── requirements.txt
-├── get_ocr_vision.py
-├── lang/
-│   ├── en.json
-│   └── ja.json
-└── modules/
-    └── ocr_vision.py
-```
-
-## Requirements
+### Requirements
 
 - Python 3.10 or later
-- A Google Cloud project with Vision API enabled
-- A service account key for authentication
+- A Google Cloud project with the Vision API enabled
+- A service account key for Google Cloud Vision API
 
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Setup
-
-### 1. Create a virtual environment
+### Setup
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
 ```
 
-On Windows:
-
-```bat
-.venv\Scripts\activate
-```
-
-### 2. Prepare credentials
-
-Create a service account in Google Cloud, enable the Vision API, and download a JSON key.
-Then set the environment variable:
+On Windows, activate the virtual environment with:
 
 ```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
-```
-
-On Windows PowerShell:
-
-```powershell
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\service-account-key.json"
+.venv\Scripts\activate
 ```
 
 ## Usage
 
-### Local image
+### Basic
 
 ```bash
 python get_ocr_vision.py ./samples/image.jpg
-```
-
-### Remote image URL
-
-```bash
-python get_ocr_vision.py "https://example.org/image.jpg"
 ```
 
 ### Specify UI language
 
 ```bash
 python get_ocr_vision.py ./samples/image.jpg --lang en
-python get_ocr_vision.py ./samples/image.jpg --lang ja
 ```
 
-### Specify OCR language hints
+### Provide OCR language hints
 
 ```bash
-python get_ocr_vision.py ./samples/image.jpg --ocr-hint "vi,lo"
+python get_ocr_vision.py ./samples/image.jpg --ocr-hint "vi,th,zh,ja"
 ```
 
-### Force automatic detection
+### Automatic OCR detection
 
 ```bash
 python get_ocr_vision.py ./samples/image.jpg --ocr-hint auto
 ```
 
-## Language hints
+### Remote image URL
 
-Language hints can improve OCR quality for difficult or mixed-script materials, but they do not guarantee perfect recognition.
-For research use, OCR results should still be checked against the source image.
+```bash
+python get_ocr_vision.py "https://example.org/sample.jpg" --ocr-hint "vi,lo"
+```
 
-Examples:
+## Directory Structure
 
-- `vi` for Vietnamese
-- `th` for Thai
-- `zh` for Chinese
-- `ja` for Japanese
-- `lo` for Lao
+```text
+get_ocr_googlevision/
+├── lang/
+│   ├── en.json
+│   └── ja.json
+├── modules/
+│   └── ocr_vision.py
+├── .gitignore
+├── CHANGELOG.md
+├── CITATION.cff
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+├── README_ja.md
+├── get_ocr_vision.py
+└── requirements.txt
+```
 
-## Typical use cases
+## Responsible and Ethical Use
 
-- temple signboards and inscriptions
-- funeral books and memorial materials
-- multilingual archival images
-- photographed documents in field research
-- exploratory OCR before structured metadata extraction
+This tool uses the Google Cloud Vision API to perform OCR processing on images.
 
+Please use it responsibly:
 
+- Ensure you have the right to process the images you submit
+- Respect copyright, privacy, and data ownership
+- Avoid sending sensitive or confidential material to external APIs unless you have confirmed it is appropriate to do so
+- Follow Google Cloud Vision API usage limits, billing rules, and applicable terms
+- Check OCR results before reuse in research outputs, databases, or publications
 
-## License
+This tool does not attempt to bypass service limitations or protections.
 
-This project is released under the MIT License. See `LICENSE`.
+## Limitations
 
-Copyright (c) 2026 Kimiya Kitani
+- OCR accuracy depends heavily on image quality, contrast, resolution, and layout
+- Some languages, mixed scripts, or degraded materials may be recognized incorrectly
+- Preprocessing may still be necessary for faint, noisy, or shadowed images
+- Google Cloud Vision API behavior and output may change over time
+- This repository currently provides a practical CLI workflow rather than a full batch management system
+
+## Academic Use
+
+This software was originally developed as a practical research tool for OCR extraction from image-based materials in multilingual research contexts.
+
+Typical use cases include:
+
+- Digital humanities
+- Southeast Asian studies
+- Historical document processing
+- Multilingual image-based text extraction workflows
+
+If you use this software in academic research, a citation to the repository or DOI is appreciated.
+
+## DOI
+
+This repository is archived on Zenodo.
+
+https://doi.org/10.5281/zenodo.18910589
+
+## Citation
+
+If you use this software in your research, please cite:
+
+Kitani, K. (2026).  
+Google Cloud Vision Multi-Language OCR Tool (Version 1.5.0).  
+Zenodo. https://doi.org/10.5281/zenodo.18910589
+
+## Files in This Repository
+
+- `get_ocr_vision.py` — main CLI script
+- `modules/ocr_vision.py` — core OCR processing module
+- `lang/en.json` — English UI messages
+- `lang/ja.json` — Japanese UI messages
+- `README.md` — English documentation
+- `README_ja.md` — Japanese documentation
+- `LICENSE` — MIT License
+- `requirements.txt` — Python dependencies
 
 ## Author
 
-Kimiya Kitani
+**Kimiya Kitani**  
+Center for Southeast Asian Studies, Kyoto University
+
+## License
+
+This project is licensed under the **MIT License**.
+Copyright (c) 2026 Kimiya Kitani

@@ -1,155 +1,165 @@
-# get_ocr_googlevision
+# Google Cloud Vision 多言語OCRツール
 
-**Japanese** / [English](README.md) 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18910589.svg)](https://doi.org/10.5281/zenodo.18910589)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](#インストール)
+[![English](https://img.shields.io/badge/README-English-green.svg)](README.md)
 
-Google Cloud Vision API を用いて、ローカル画像ファイルまたはリモート画像 URL から文字を抽出する、軽量な研究用 OCR ツールです。
-ベトナム語、タイ語、中国語、日本語、ラオ語など、複数言語・複数文字体系が混在する資料の実務的な OCR 利用を想定しています。
+Google Cloud Vision API を用いて、多言語画像からテキストを抽出するための研究用OCRツールです。
 
-## 概要
+このツールは、ローカル画像ファイルおよびリモート画像URLを対象として、コマンドラインから実行できます。特に、ベトナム語、タイ語、中国語、日本語などを含む多言語資料の研究利用を想定しています。
 
-このリポジトリは、Google Cloud Vision の Document Text Detection を使いやすい CLI として包んだ小規模ツールです。
-主な用途は次のとおりです。
+## 主な機能
 
-- ローカル画像の OCR
-- リモート画像 URL の OCR
-- 言語ヒントによる認識精度の補助
-- JSON による簡易 UI 多言語化
-- 他の研究ワークフローへ流用しやすいモジュール構成
+- Google Cloud Vision API を利用した OCR
+- ローカル画像と画像URLの両方に対応
+- `--ocr-hint` による言語ヒント指定、または自動認識
+- `lang/` 配下の JSON による英語・日本語UI
+- `modules/ocr_vision.py` によるモジュール化された実装
+- 研究用途のOCR・文字抽出ワークフローに適した構成
 
-大きなフレームワークではなく、再利用しやすい研究ツールとして整理しています。
+## インストール
 
-## 特徴
-
-- シンプルな CLI
-- Google Cloud Vision API ベースの OCR
-- 言語ヒント未指定時は自動判定モード
-- `vi,th,ja` のようなカンマ区切りヒント指定に対応
-- `lang/` に英語・日本語の UI メッセージを配置
-- コア処理を `modules/ocr_vision.py` に分離
-
-## ディレクトリ構成
-
-```text
-get_ocr_googlevision/
-├── CITATION.cff
-├── CHANGELOG.md
-├── LICENSE
-├── README.md
-├── README_ja.md
-├── requirements.txt
-├── get_ocr_vision.py
-├── lang/
-│   ├── en.json
-│   └── ja.json
-└── modules/
-    └── ocr_vision.py
-```
-
-## 動作要件
+### 必要条件
 
 - Python 3.10 以上
 - Vision API を有効化した Google Cloud プロジェクト
-- 認証用サービスアカウント JSON キー
+- Google Cloud Vision API 用サービスアカウント鍵
 
-依存関係のインストール:
-
-```bash
-pip install -r requirements.txt
-```
-
-## セットアップ
-
-### 1. 仮想環境の作成
+### セットアップ
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
 ```
 
-Windows の場合:
-
-```bat
-.venv\Scripts\activate
-```
-
-### 2. 認証情報の準備
-
-Google Cloud 側でサービスアカウントを作成し、Vision API を有効化し、JSON キーを取得します。
-その後、環境変数を設定します。
+Windows では仮想環境の有効化に次を利用します。
 
 ```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
-```
-
-PowerShell の場合:
-
-```powershell
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\service-account-key.json"
+.venv\Scripts\activate
 ```
 
 ## 使い方
 
-### ローカル画像
+### 基本実行
 
 ```bash
 python get_ocr_vision.py ./samples/image.jpg
 ```
 
-### リモート画像 URL
+### UI表示言語の指定
 
 ```bash
-python get_ocr_vision.py "https://example.org/image.jpg"
-```
-
-### UI 表示言語を指定
-
-```bash
-python get_ocr_vision.py ./samples/image.jpg --lang en
 python get_ocr_vision.py ./samples/image.jpg --lang ja
 ```
 
-### OCR 言語ヒントを指定
+### OCR言語ヒントの指定
 
 ```bash
-python get_ocr_vision.py ./samples/image.jpg --ocr-hint "vi,lo"
+python get_ocr_vision.py ./samples/image.jpg --ocr-hint "vi,th,zh,ja"
 ```
 
-### 自動判定を明示
+### 自動判別
 
 ```bash
 python get_ocr_vision.py ./samples/image.jpg --ocr-hint auto
 ```
 
-## 言語ヒントについて
+### リモート画像URL
 
-言語ヒントは、難読資料や混在スクリプト資料では OCR 精度の改善に役立つことがあります。
-ただし、完全な認識を保証するものではないため、研究利用では原画像との照合が必要です。
+```bash
+python get_ocr_vision.py "https://example.org/sample.jpg" --ocr-hint "vi,lo"
+```
 
-例:
+## ディレクトリ構成
 
-- `vi` ベトナム語
-- `th` タイ語
-- `zh` 中国語
-- `ja` 日本語
-- `lo` ラオ語
+```text
+get_ocr_googlevision/
+├── lang/
+│   ├── en.json
+│   └── ja.json
+├── modules/
+│   └── ocr_vision.py
+├── .gitignore
+├── CHANGELOG.md
+├── CITATION.cff
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+├── README_ja.md
+├── get_ocr_vision.py
+└── requirements.txt
+```
 
-## 想定利用例
+## Responsible and Ethical Use
 
-- 寺院看板や碑文の読取り
-- 葬送本・追悼資料の OCR
-- 多言語アーカイブ画像の確認
-- フィールド調査で撮影した文書画像の読取り
-- 構造化メタデータ作成前の探索的 OCR
+本ツールは Google Cloud Vision API を利用して画像OCRを行います。
 
+利用にあたっては、次の点に注意してください。
 
+- 処理対象画像を利用する権利があることを確認する
+- 著作権、プライバシー、データ所有権を尊重する
+- 機密性の高い画像や情報を外部APIへ送信してよいか事前に確認する
+- Google Cloud Vision API の利用制限、課金、利用条件に従う
+- 研究成果やデータベースに再利用する前にOCR結果を必ず確認する
 
-## ライセンス
+本ツールはサービス制限や保護機構の回避を目的とするものではありません。
 
-このプロジェクトは MIT License で公開しています。詳細は `LICENSE` を参照してください。
+## 制限事項
 
+- OCR精度は画像品質、コントラスト、解像度、レイアウトに大きく依存します
+- 言語混在や劣化資料では誤認識が生じる場合があります
+- 薄い文字、ノイズ、影のある画像では前処理が必要なことがあります
+- Google Cloud Vision API の仕様変更により結果が変わる可能性があります
+- 本リポジトリは実用的なCLIワークフローを提供するものであり、完全なバッチ管理システムではありません
+
+## Academic Use
+
+本ソフトウェアは、多言語研究資料に対する画像OCRのための実用的な研究ツールとして開発されました。
+
+想定される利用例:
+
+- デジタル・ヒューマニティーズ
+- 東南アジア研究
+- 歴史資料処理
+- 多言語画像資料からの文字抽出ワークフロー
+
+研究で利用する場合は、リポジトリまたは DOI の引用をご検討ください。
+
+## DOI
+
+本リポジトリは Zenodo にアーカイブされています。
+
+https://doi.org/10.5281/zenodo.18910589
+
+## Citation
+
+研究で本ソフトウェアを利用する場合は、次のように引用してください。
+
+Kitani, K. (2026).  
+Google Cloud Vision Multi-Language OCR Tool (Version 1.5.0).  
+Zenodo. https://doi.org/10.5281/zenodo.18910589
+
+## リポジトリ内の主なファイル
+
+- `get_ocr_vision.py` — メインCLIスクリプト
+- `modules/ocr_vision.py` — OCR処理の中核モジュール
+- `lang/en.json` — 英語UIメッセージ
+- `lang/ja.json` — 日本語UIメッセージ
+- `README.md` — 英語版ドキュメント
+- `README_ja.md` — 日本語版ドキュメント
+- `LICENSE` — MITライセンス
+- `requirements.txt` — Python依存関係
+
+## Author
+
+**Kimiya Kitani**  
+京都大学東南アジア地域研究研究所
+
+## License
+
+本プロジェクトは **MIT License** の下で公開されています。
 Copyright (c) 2026 Kimiya Kitani
-
-
-## 作成者
-
-Kimiya Kitani
