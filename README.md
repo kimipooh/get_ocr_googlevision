@@ -1,110 +1,154 @@
-# 🌐 Google Cloud Vision Multi-Language OCR Tool
+# get_ocr_googlevision
 
-> A robust, modular Python wrapper for the **Google Cloud Vision API** designed for high-accuracy **Document Text Detection (OCR)**.  
-> Optimized for multilingual environments including **Vietnamese, Thai, Chinese, and Japanese**.  
-> Supports both **local image files** and **remote image URLs**.
+**English** | [Japanese](README_ja.md)
 
----
+A lightweight research tool for extracting text from local image files or remote image URLs with the Google Cloud Vision API.
+It is designed for practical OCR work in multilingual environments, especially when dealing with Vietnamese, Thai, Chinese, Japanese, Lao, and mixed-script materials.
 
-## ✨ Features
+## Overview
 
-- 🔍 **Auto-Detection & Manual Hints** Switch between "auto" mode for automatic language detection and "hint" mode to improve accuracy for specific languages.
+This repository provides a small command-line wrapper around Google Cloud Vision Document Text Detection.
+It supports:
 
-- 🌏 **Multi-Language Support** Optimized for complex scripts (Thai, Vietnamese, etc.) using `language_hints`.
+- OCR for local image files
+- OCR for remote image URLs
+- optional language hints for better recognition accuracy
+- simple UI message localization via JSON files
+- a modular structure that can be reused in other research workflows
 
-- 🌐 **Localization (I18n)** UI messages managed via external JSON files in the `lang/` directory, supporting English and Japanese.
+This project is intended as a reusable research tool rather than a large framework.
 
-- 🧩 **Modular Design** Clean, class-based implementation (`VisionAPIWrapper`) for easy integration into other projects.
+## Features
 
-- 🛡 **Future-Proof** Suppresses version-related `FutureWarning` messages common in various Python environments.
+- Simple CLI interface
+- Google Cloud Vision API based OCR
+- Automatic detection mode when no language hints are provided
+- Manual language hint mode with comma-separated codes such as `vi,th,ja`
+- English and Japanese UI message files in `lang/`
+- Separated core logic in `modules/ocr_vision.py`
 
----
+## Project structure
 
-## 📋 Prerequisites
+```text
+get_ocr_googlevision/
+├── CITATION.cff
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
+├── README_ja.md
+├── requirements.txt
+├── get_ocr_vision.py
+├── lang/
+│   ├── en.json
+│   └── ja.json
+└── modules/
+    └── ocr_vision.py
+```
 
-### 🐍 Python
-- Python **3.10 ~ 3.14+** (latest recommended)
+## Requirements
 
-### ☁ Google Cloud Setup
-1. Enable **Cloud Vision API** in your Google Cloud Console.
-2. Create a **Service Account** with the `Cloud Vision API User` role.
-3. Generate a **JSON Key** and save it as `service-account-key.json` in your project root.
+- Python 3.10 or later
+- A Google Cloud project with Vision API enabled
+- A service account key for authentication
 
-> [!CAUTION]
-> **Important:** Never share your JSON key. The Google Cloud Vision API offers a free quota of 1,000 units per month as of February 2026.
+Install dependencies:
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## 🚀 Installation & Setup
+## Setup
 
-### 1. Create a Virtual Environment
+### 1. Create a virtual environment
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+source .venv/bin/activate
 ```
 
-### 2. Install Dependencies
+On Windows:
+
+```bat
+.venv\Scripts\activate
+```
+
+### 2. Prepare credentials
+
+Create a service account in Google Cloud, enable the Vision API, and download a JSON key.
+Then set the environment variable:
+
 ```bash
-pip install google-cloud-vision
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
 ```
 
----
+On Windows PowerShell:
 
-## ⚙ Configuration
-
-### 🔐 Credentials
-Set the environment variable before running the script:
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="service-account-key.json"
+```powershell
+$env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\service-account-key.json"
 ```
 
-### 🔧 Global Variables
-Customize behavior in `ocr_vision.py`:
-- `DEFAULT_LANGUAGE_HINTS`: Default hints (e.g., `["vi", "th", "zh", "ja"]`).
-- `HIDE_PYTHON_WARNINGS`: Toggle suppression of API-related warnings.
+## Usage
 
----
+### Local image
 
-## ▶ Usage
-
-### 📂 Basic Execution (Auto-Detection)
 ```bash
 python get_ocr_vision.py ./samples/image.jpg
 ```
 
-### 🌐 Specify UI Language
-Use the `--lang` option to use specific messages from the `lang/` directory.
+### Remote image URL
+
 ```bash
-python get_ocr_vision.py ./samples/photo.png --lang en
+python get_ocr_vision.py "https://example.org/image.jpg"
 ```
 
-### 🌏 Provide OCR Language Hints
-Provide comma-separated language codes to improve accuracy for specific scripts.
+### Specify UI language
+
 ```bash
-python get_ocr_vision.py https://example.com/image.jpg --ocr-hint "vi,lo"
+python get_ocr_vision.py ./samples/image.jpg --lang en
+python get_ocr_vision.py ./samples/image.jpg --lang ja
 ```
 
----
+### Specify OCR language hints
 
-## 📁 Project Structure
-
-```text
-get_ocr_googlevision/
-├── lang/
-│   ├── en.json                 # English UI messages
-│   └── ja.json                 # Japanese UI
-├── modules/
-│   └── ocr_vision.py           # Core logic (API messages Wrapper)
-├── get_ocr_vision.py           # CLI execution script
-└── LICENSE                     # MIT License file
+```bash
+python get_ocr_vision.py ./samples/image.jpg --ocr-hint "vi,lo"
 ```
 
----
+### Force automatic detection
 
-## 👤 Author
-**Kimiya Kitani**
+```bash
+python get_ocr_vision.py ./samples/image.jpg --ocr-hint auto
+```
 
-## 📜 License
-This project is licensed under the **MIT License**.
+## Language hints
+
+Language hints can improve OCR quality for difficult or mixed-script materials, but they do not guarantee perfect recognition.
+For research use, OCR results should still be checked against the source image.
+
+Examples:
+
+- `vi` for Vietnamese
+- `th` for Thai
+- `zh` for Chinese
+- `ja` for Japanese
+- `lo` for Lao
+
+## Typical use cases
+
+- temple signboards and inscriptions
+- funeral books and memorial materials
+- multilingual archival images
+- photographed documents in field research
+- exploratory OCR before structured metadata extraction
+
+
+
+## License
+
+This project is released under the MIT License. See `LICENSE`.
 
 Copyright (c) 2026 Kimiya Kitani
+
+## Author
+
+Kimiya Kitani

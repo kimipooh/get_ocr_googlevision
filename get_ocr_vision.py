@@ -1,9 +1,34 @@
 """
+get_ocr_vision.py
+
+A lightweight command-line OCR tool for research use with Google Cloud Vision API.
+
 Author: Kimiya Kitani
-License: MIT License (See LICENSE file for details)
+License: MIT License (see LICENSE)
+Repository purpose: Public research tool
 Version: 1.5
-Date: 25 Feb 2026
-Description: Vision OCR tool supporting comma-separated language hints (e.g., --ocr-hint="vi,lo").
+Date: 2026-03-08
+
+Overview:
+- Accepts a local image path or remote image URL.
+- Uses Google Cloud Vision Document Text Detection.
+- Supports comma-separated OCR language hints such as --ocr-hint="vi,lo".
+- Supports simple UI localization via JSON language files.
+
+Typical use cases:
+- multilingual field photographs
+- archival image transcription
+- temple signboards, inscriptions, and printed materials
+- exploratory OCR before manual verification or metadata extraction
+
+Prerequisites:
+- Python 3.10+
+- google-cloud-vision package
+- GOOGLE_APPLICATION_CREDENTIALS must point to a valid service account key
+
+Notes:
+- OCR output should be manually checked before scholarly use.
+- A DOI will be added after GitHub release archiving through Zenodo.
 """
 
 import sys
